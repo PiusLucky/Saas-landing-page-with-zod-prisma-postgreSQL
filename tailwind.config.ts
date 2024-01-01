@@ -33,7 +33,10 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       colors: {
-        primary: "#54BD95"
+        primary: "#54BD95",
+        footerBackground: "#161C28",
+        dark: "#191A15",
+        customGray: "#A6A6A6"
       },
       borderRadius: {
         large: "1.875rem"
