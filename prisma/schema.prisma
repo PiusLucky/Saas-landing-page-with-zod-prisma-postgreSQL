@@ -1,0 +1,30 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 👉 SETUP INSTALLATION
+// 1. npm install prisma --save-dev
+// 2. npx prisma init
+// 3. npx prisma migrate dev --name init [Run this whenever you modify existing model(s) or add new models ]
+//    🔨 npx prisma migrate dev  OR
+//    🔨 npx prisma db push
+// 4. npm install @prisma/client (install prisma client) 
+
+model User {
+  id                Int      @id @default(autoincrement())
+  email             String   @unique
+  full_name         String
+  is_verified       Boolean  @default(false)
+  password          String
+  randomize_channel Int
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+}

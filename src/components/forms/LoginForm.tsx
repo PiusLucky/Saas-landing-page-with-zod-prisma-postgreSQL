@@ -76,6 +76,7 @@ function LoginForm() {
                     {...field}
                     className="h-[3.75rem] w-full rounded-large"
                     startIcon="email"
+                    type="password"
                   />
                 </FormControl>
                 <FormMessage />

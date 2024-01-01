@@ -14,35 +14,18 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import MainButton from "../common/MainButton";
 import Link from "next/link";
+import { CreateUserInputValidation } from "@/lib/validations";
+import { useState } from "react";
+import makeApiCallService from "@/service/apiService";
+import { ICreateUserResponse } from "@/types";
+import { useRouter } from "next/navigation";
 
-const FormSchema = z.object({
-  full_name: z
-    .string()
-    .min(3, {
-      message: "Full name must be at least 3 characters.",
-    })
-    .max(50, {
-      message: "Full name must be at most 50 characters.",
-    }),
-  email: z
-    .string()
-    .email({
-      message: "Enter a valid email",
-    })
-    .min(2, {
-      message: "email must be at least 2 characters.",
-    }),
-  password: z
-    .string()
-    .min(8, {
-      message: "Password must be at least 8 characters.",
-    })
-    .max(25, {
-      message: "Password must be at most 25 characters.",
-    }),
-});
+const FormSchema = CreateUserInputValidation;
 
 function RegisterForm() {
+  const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -52,15 +35,31 @@ function RegisterForm() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    try {
+      setLoading(true);
+
+      const response = await makeApiCallService<ICreateUserResponse>(
+        "/api/user",
+        {
+          method: "POST",
+          body: data,
+        }
+      );
+
+      if (response?.response?.meta?.success) {
+        toast({
+          title: "🎉 Registration success",
+          description: response?.response?.meta?.message,
+        });
+
+        router.push("/login");
+      }
+
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+    }
   }
 
   return (
@@ -121,6 +120,7 @@ function RegisterForm() {
                     {...field}
                     className="h-[3.75rem] w-full rounded-large"
                     startIcon="padlock"
+                    type="password"
                   />
                 </FormControl>
                 <FormMessage />
@@ -133,6 +133,7 @@ function RegisterForm() {
             classes="h-[3.31rem] rounded-large"
             width="full_width"
             isSubmitable
+            isLoading={loading}
           />
 
           <div className="flex justify-end text-[#191A15] mt-4">
