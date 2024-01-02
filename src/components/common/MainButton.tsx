@@ -67,13 +67,7 @@ const MainButton = forwardRef<HTMLButtonElement, MainButtonProps>(
         ref={ref}
         disabled={disabled}
       >
-        {iconRoute && (
-          <img
-            src={iconRoute}
-            alt="left button icon"
-            className="w-[24px] h-[24px]"
-          />
-        )}
+        {iconRoute && <img src={iconRoute} alt="left button icon" />}
         {iconRoute && <span>&nbsp;</span>}
         {iconComponent}
         {iconComponent && <span>&nbsp;</span>}

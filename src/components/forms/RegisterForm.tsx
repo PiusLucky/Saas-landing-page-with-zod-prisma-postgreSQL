@@ -40,7 +40,7 @@ function RegisterForm() {
       setLoading(true);
 
       const response = await makeApiCallService<ICreateUserResponse>(
-        "/api/user",
+        "/api/register",
         {
           method: "POST",
           body: data,

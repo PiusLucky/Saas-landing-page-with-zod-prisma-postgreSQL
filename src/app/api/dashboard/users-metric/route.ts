@@ -5,7 +5,7 @@ import { validateToken } from "@/lib/token";
 export async function GET(req: Request) {
   try {
     const token = req.headers.get("Authorization");
-
+  
     await validateToken(token);
 
     const totalUsers = await db.user.count();

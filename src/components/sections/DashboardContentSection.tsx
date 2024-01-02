@@ -1,34 +1,103 @@
-import React from "react";
-import DashboardTable from "../tables/DashboardTable";
+"use client";
 
-function DashboardContentSection() {
+import React, { useEffect, useState } from "react";
+import DashboardTable from "../tables/DashboardTable";
+import {
+  IUserProfileResponse,
+  IUsersListingResponse,
+  IUsersMetricResponse,
+} from "@/types";
+import { Skeleton } from "../ui/skeleton";
+import makeApiCallService from "@/service/apiService";
+
+interface IProps {
+  loading: boolean;
+  userProfile: IUserProfileResponse | null;
+  refreshKey: number;
+}
+
+function DashboardContentSection({ loading, userProfile, refreshKey }: IProps) {
+  const [loadingDashboardContent, setLoadingDashboardContent] = useState(true);
+  const [usersMetric, setUsersMetric] = useState<IUsersMetricResponse | null>(
+    null
+  );
+
+  const [
+    usersListing,
+    setUsersListing,
+  ] = useState<IUsersListingResponse | null>(null);
+
   const userMetric = [
     {
       iconPath: "/images/user_alt_icon.png",
       title: "Users",
-      count: "450",
+      count: usersMetric?.response?.data?.totalUsers,
     },
     {
       iconPath: "/images/stylish_check_icon.png",
       title: "Total Verified",
-      count: "350",
+      count: usersMetric?.response?.data?.totalVerifiedUsers,
     },
     {
       iconPath: "/images/channel_icon.png",
       title: "Channels",
-      count: "3",
+      count: usersMetric?.response?.data?.totalChannels,
     },
   ];
+
+  useEffect(() => {
+    async function fetch() {
+      try {
+        const usersMetricResponse = await makeApiCallService<
+          IUsersMetricResponse
+        >("/api/dashboard/users-metric", {
+          method: "GET",
+        });
+
+        const usersListingResponse = await makeApiCallService<
+          IUsersListingResponse
+        >("/api/dashboard/users-listing", {
+          method: "GET",
+        });
+
+        setUsersMetric(usersMetricResponse as IUsersMetricResponse);
+
+        setUsersListing(usersListingResponse as IUsersListingResponse);
+
+        setLoadingDashboardContent(false);
+      } catch (err) {
+        setLoadingDashboardContent(false);
+      }
+    }
+
+    fetch();
+  }, [refreshKey]);
+
   return (
     <section>
       <div>
-        <p className="text-[3rem]">
+        <div className="text-[3rem] flex gap-4 items-center">
           <span className="text-[#6D7580]">Hi </span>
-          <span className="text-[#2B3A4B]">Lucky,</span>
-        </p>
-        <p className="text-[#858C94] text-[1.5rem]">
-          It&apos;s nice to see you back.
-        </p>
+          {loading ? (
+            <Skeleton className="w-[10rem] h-[2rem]" />
+          ) : (
+            <span className="text-[#2B3A4B]">
+              {userProfile?.response?.data?.full_name},
+            </span>
+          )}
+        </div>
+        <div className="text-[#858C94] text-[1.5rem] flex gap-4">
+          It&apos;s nice to see you back. Channel{" "}
+          <strong>
+            {loading ? (
+              <Skeleton className="w-[5rem] h-[2rem]" />
+            ) : (
+              <span className="text-[#2B3A4B]">
+                {userProfile?.response?.data?.randomize_channel},
+              </span>
+            )}
+          </strong>
+        </div>
       </div>
       <div className="flex flex-col md:flex-row justify-between gap-16 mt-[3.69rem] mb-[5.44rem]">
         {userMetric.map((metric, index) => (
@@ -41,13 +110,33 @@ function DashboardContentSection() {
             </div>
 
             <div className="flex flex-col gap-[0.46rem]">
-              <p className="text-[#A3AED0] text-[1rem]">{metric.title}</p>
-              <p className="text-[#1B2559] text-[2.25rem]">{metric.count}</p>
+              <div className="text-[#A3AED0] text-[1rem]">
+                {loadingDashboardContent ? (
+                  <Skeleton className="w-[5rem] h-[2rem]" />
+                ) : (
+                  <span>{metric.title}</span>
+                )}
+              </div>
+              <div className="text-[#1B2559] text-[2.25rem]">
+                {loadingDashboardContent ? (
+                  <Skeleton className="w-[5rem] h-[2rem]" />
+                ) : (
+                  <span>{metric.count}</span>
+                )}
+              </div>
             </div>
           </div>
         ))}
       </div>
-      <DashboardTable />
+      {loadingDashboardContent ? (
+        <div className="flex flex-col gap-8">
+          <Skeleton className="h-[3rem] w-full" />
+          <Skeleton className="h-[3rem] w-full" />
+          <Skeleton className="h-[3rem] w-full" />
+        </div>
+      ) : (
+        <DashboardTable usersListing={usersListing} />
+      )}
     </section>
   );
 }

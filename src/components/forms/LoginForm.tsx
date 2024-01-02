@@ -14,6 +14,10 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import MainButton from "../common/MainButton";
 import Link from "next/link";
+import { useState } from "react";
+import makeApiCallService from "@/service/apiService";
+import { useRouter } from "next/navigation";
+import { ILoginUserResponse } from "@/types";
 
 const FormSchema = z.object({
   email: z
@@ -35,6 +39,7 @@ const FormSchema = z.object({
 });
 
 function LoginForm() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -42,16 +47,34 @@ function LoginForm() {
       password: "",
     },
   });
+  const [loading, setLoading] = useState(false);
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    try {
+      setLoading(true);
+
+      const response = await makeApiCallService<ILoginUserResponse>(
+        "/api/login",
+        {
+          method: "POST",
+          body: data,
+        }
+      );
+
+      if (response?.response?.meta?.success) {
+        localStorage.setItem("TOKEN", response?.response?.data?.token);
+        toast({
+          title: "🎉 Login success",
+          description: response?.response?.meta?.message,
+        });
+
+        router.push("/home");
+      }
+
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+    }
   }
 
   return (
@@ -76,7 +99,7 @@ function LoginForm() {
                     {...field}
                     className="h-[3.75rem] w-full rounded-large"
                     startIcon="email"
-                    type="password"
+                    type="email"
                   />
                 </FormControl>
                 <FormMessage />
@@ -95,6 +118,7 @@ function LoginForm() {
                     {...field}
                     className="h-[3.75rem] w-full rounded-large"
                     startIcon="padlock"
+                    type="password"
                   />
                 </FormControl>
                 <FormMessage />
@@ -107,6 +131,7 @@ function LoginForm() {
             classes="h-[3.31rem] rounded-large"
             width="full_width"
             isSubmitable
+            isLoading={loading}
           />
 
           <div className="flex justify-end text-[#191A15] mt-4">

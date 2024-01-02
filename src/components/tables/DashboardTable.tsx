@@ -2,34 +2,26 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { IUsersListingResponse } from "@/types";
 
-const users = [
-  {
-    id: 0,
-    name: "John Doe",
-    joinedOn: "15/09/2024",
-    verified: false,
-  },
-  {
-    id: 1,
-    name: "Jane Joe",
-    joinedOn: "15/09/2024",
-    verified: true,
-  },
-  {
-    id: 2,
-    name: "John Cena",
-    joinedOn: "15/09/2024",
-    verified: true,
-  },
-];
+function DashboardTable({
+  usersListing,
+}: {
+  usersListing: IUsersListingResponse | null;
+}) {
+  const users = usersListing?.response?.data?.map((user) => {
+    return {
+      id: user.id,
+      name: user.full_name,
+      joinedOn: user.created_at?.toString(),
+      verified: user.is_verified,
+    };
+  });
 
-function DashboardTable() {
   return (
     <Table>
       <TableHeader>
@@ -40,7 +32,7 @@ function DashboardTable() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {users.map((user) => (
+        {users?.map((user) => (
           <TableRow key={user.id}>
             <TableCell className="font-medium">{user.name}</TableCell>
             <TableCell>{user.joinedOn}</TableCell>
