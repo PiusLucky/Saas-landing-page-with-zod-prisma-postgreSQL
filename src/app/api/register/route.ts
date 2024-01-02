@@ -48,6 +48,6 @@ export async function POST(req: Request) {
       201
     );
   } catch (err) {
-    return error_response("CREATE_USER: Something went wrong ", 500, err);
+    return error_response((err as any)?.message, 400);
   }
 }

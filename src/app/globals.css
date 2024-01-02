@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.button-shadow {
+  box-shadow: 1px 1px 25px 0px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-card-shadow {
+  box-shadow: 0px 18px 32px 0px rgba(208, 210, 218, 0.15);
+}

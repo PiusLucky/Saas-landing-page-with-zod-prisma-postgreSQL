@@ -27,4 +27,23 @@ const CreateUserInputValidation = z.object({
     }),
 });
 
-export { CreateUserInputValidation };
+const LoginUserInputValidation = z.object({
+  email: z
+    .string()
+    .email({
+      message: "Enter a valid email",
+    })
+    .min(2, {
+      message: "email must be at least 2 characters.",
+    }),
+  password: z
+    .string()
+    .min(8, {
+      message: "Password must be at least 8 characters.",
+    })
+    .max(25, {
+      message: "Password must be at most 25 characters.",
+    }),
+});
+
+export { CreateUserInputValidation, LoginUserInputValidation };

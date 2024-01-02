@@ -16,8 +16,8 @@ function BenefitSection() {
         </p>
 
         <div className="flex flex-col gap-8">
-          {benefits.map((benefit) => (
-            <div className="flex gap-4">
+          {benefits.map((benefit, index) => (
+            <div className="flex gap-4" key={index}>
               <img
                 src="/images/green_check_icon.png"
                 alt="success check icon"
