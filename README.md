@@ -1,5 +1,5 @@
 # Saas-landing-page-with-nextauth-zod-prisma-postgreSQL
-A fullstack SaaS landing page and dashboard built with Nextjs, Zod, Prisma, PostgreSQL, Typescript, Tailwind and Shadcn
+A fullstack SaaS landing page, authentication screens and dashboard built with Nextjs, Zod, Prisma, PostgreSQL, Typescript, Tailwind and Shadcn
 
 # ☁️ Deployed link
 https://saas-landing-page-with-zod-prisma-postgre-sql.vercel.app/
