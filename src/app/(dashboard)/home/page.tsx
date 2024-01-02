@@ -18,6 +18,7 @@ function Dashboard() {
   const handleVerifyUser = async () => {
     if (verifyLoading) return;
     try {
+      setVerifyLoading(true);
       const verifyResponse = await makeApiCallService<IUserProfileResponse>(
         "/api/dashboard/user-profile",
         {
