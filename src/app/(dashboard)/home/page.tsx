@@ -68,6 +68,7 @@ function Dashboard() {
         ) : (
           <MainButton
             text="Verify me"
+            dataLoadingText="Wait..."
             classes={`${
               verifyLoading ? "cursor-wait" : ""
             } bg-white rounded-[1.0625rem] hover:bg-white text-primary font-[700] w-[6.1875rem] h-[2.875rem] button-shadow`}

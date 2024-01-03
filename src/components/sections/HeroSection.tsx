@@ -12,7 +12,7 @@ function HeroSection() {
   return (
     <section className="flex flex-col gap-8 md:flex-row justify-between">
       <div className="z-10">
-        <p className="mb-[1.87rem] text-3xl md:text-[5rem] text-dark md:leading-[5.625rem] font-[700]">
+        <p className="mb-[1.87rem] text-3xl lg:text-[5rem] text-dark lg:leading-[5.625rem] font-[700]">
           We&apos;re here to Increase your Productivity
         </p>
         <img src="/images/stylish_underline.png" alt="stylish underline" />
@@ -20,7 +20,7 @@ function HeroSection() {
           Let&apos;s make your work more organize and easily using the Taskio
           Dashboard with many of the latest featuresin managing work every day.
         </p>
-        <div className="flex gap-[2.81rem]">
+        <div className="flex gap-4 md:gap-[2.81rem]">
           <MainButton
             text="Get Started"
             classes="w-[10rem] h-[3.275rem] rounded-[2.5rem]"

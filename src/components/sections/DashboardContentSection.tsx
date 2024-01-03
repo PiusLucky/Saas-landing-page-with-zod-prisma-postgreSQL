@@ -76,7 +76,7 @@ function DashboardContentSection({ loading, userProfile, refreshKey }: IProps) {
   return (
     <section>
       <div>
-        <div className="text-[3rem] flex gap-4 items-center">
+        <div className="text-2xl mt-8 md:text-[3rem] flex gap-4 items-center">
           <span className="text-[#6D7580]">Hi </span>
           {loading ? (
             <Skeleton className="w-[10rem] h-[2rem]" />
@@ -86,14 +86,14 @@ function DashboardContentSection({ loading, userProfile, refreshKey }: IProps) {
             </span>
           )}
         </div>
-        <div className="text-[#858C94] text-[1.5rem] flex gap-4">
+        <div className="text-[#858C94] mt-4 md:text-[1.5rem] flex gap-4">
           It&apos;s nice to see you back. Channel{" "}
           <strong>
             {loading ? (
               <Skeleton className="w-[5rem] h-[2rem]" />
             ) : (
               <span className="text-[#2B3A4B]">
-                {userProfile?.response?.data?.randomize_channel},
+                ({userProfile?.response?.data?.randomize_channel})
               </span>
             )}
           </strong>

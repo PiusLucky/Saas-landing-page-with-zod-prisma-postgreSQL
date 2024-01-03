@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <main className="relative">
       <NavBar />
-      <div className="mx-4 md:mx-[3.25rem] mt-32 md:mt-16">
+      <div className="mx-4 md:mx-[3.25rem] pt-32 lg:pt-16">
         <HeroSection />
 
         <div className=" hidden md:block md:absolute top-0 left-0 -z-10">
