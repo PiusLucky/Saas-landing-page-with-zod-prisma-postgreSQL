@@ -4,7 +4,7 @@ A fullstack SaaS landing page, authentication screens and dashboard built with N
 # ☁️ Deployed link
 https://saas-landing-page-with-zod-prisma-postgre-sql.vercel.app/
 
-Youtube:  
+Youtube:  https://youtu.be/sNwj99OXino
 
 Figma: https://www.figma.com/file/d6SulnXcLNVJGMZ9OKos5P/Saas-Landing-Pages-(Community)?type=design&node-id=0-1&mode=design&t=LnOkKNoBxaJK2Mo4-0
 
